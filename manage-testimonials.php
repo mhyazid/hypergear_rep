@@ -7,7 +7,7 @@ if (!isset($_SESSION['admin_id'])) {
 
 include 'db.php';
 
-// Approve testimonial
+
 if (isset($_GET['approve'])) {
     $id = intval($_GET['approve']);
     $stmt = $conn->prepare("UPDATE testimonials SET status = 'approved' WHERE id = ?");
@@ -16,7 +16,7 @@ if (isset($_GET['approve'])) {
     $stmt->close();
 }
 
-// Delete testimonial
+
 if (isset($_GET['delete'])) {
     $id = intval($_GET['delete']);
     $stmt = $conn->prepare("DELETE FROM testimonials WHERE id = ?");
@@ -25,7 +25,7 @@ if (isset($_GET['delete'])) {
     $stmt->close();
 }
 
-// Get list of testimonials
+
 $sql = "SELECT * FROM testimonials";
 $result = $conn->query($sql);
 ?>

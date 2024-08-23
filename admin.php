@@ -7,7 +7,7 @@ if (!isset($_SESSION['admin_id'])) {
 
 include 'db.php';
 
-// Hapus produk
+
 if (isset($_GET['delete'])) {
     $id = intval($_GET['delete']);
     $stmt = $conn->prepare("DELETE FROM products WHERE id = ?");
@@ -16,7 +16,7 @@ if (isset($_GET['delete'])) {
     $stmt->close();
 }
 
-// Ambil daftar produk
+
 $sql = "SELECT * FROM products";
 $result = $conn->query($sql);
 ?>

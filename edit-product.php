@@ -7,7 +7,7 @@ if (!isset($_SESSION['admin_id'])) {
 
 include 'db.php';
 
-// Ambil data produk
+
 if (isset($_GET['id'])) {
     $id = intval($_GET['id']);
     $stmt = $conn->prepare("SELECT * FROM products WHERE id = ?");
@@ -18,39 +18,39 @@ if (isset($_GET['id'])) {
     $stmt->close();
 }
 
-// Proses edit produk
+
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $name = $_POST['name'];
     $description = $_POST['description'];
     $price = $_POST['price'];
     $imageUpdated = false;
 
-    // Periksa apakah file gambar baru di-upload
+  
     if (isset($_FILES['image']) && $_FILES['image']['error'] == UPLOAD_ERR_OK) {
         $fileTmpPath = $_FILES['image']['tmp_name'];
         $fileName = $_FILES['image']['name'];
         $fileNameCmps = explode(".", $fileName);
         $fileExtension = strtolower(end($fileNameCmps));
         
-        // Tentukan path penyimpanan file
+       
         $uploadDir = 'img/';
         $newFileName = md5(time() . $fileName) . '.' . $fileExtension;
         $uploadFileDir = $uploadDir . $newFileName;
         
-        // Pindahkan file dari tmp ke direktori upload
+
         if (move_uploaded_file($fileTmpPath, $uploadFileDir)) {
-            // Update gambar di database
+   
             $imageUpdated = true;
             $imagePath = $newFileName;
         } else {
             $message = "There was an error uploading the file, please try again.";
         }
     } else {
-        // Gunakan gambar lama jika tidak ada gambar baru yang di-upload
+
         $imagePath = $product['image_path'];
     }
 
-    // Update produk
+
     $stmt = $conn->prepare("UPDATE products SET name = ?, description = ?, price = ?, image = ? WHERE id = ?");
     $stmt->bind_param("ssdsi", $name, $description, $price, $imagePath, $id);
     $stmt->execute();

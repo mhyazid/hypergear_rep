@@ -7,11 +7,11 @@ if (!isset($_SESSION['admin_id'])) {
 
 include 'db.php';
 
-// Hapus gambar
+
 if (isset($_GET['delete'])) {
     $id = intval($_GET['delete']);
     
-    // Dapatkan nama file gambar dari database
+
     $stmt = $conn->prepare("SELECT image FROM gallery WHERE id = ?");
     $stmt->bind_param("i", $id);
     $stmt->execute();
@@ -19,12 +19,12 @@ if (isset($_GET['delete'])) {
     $stmt->fetch();
     $stmt->close();
     
-    // Hapus file gambar dari folder
+
     if ($image && file_exists("img/gallery/" . $image)) {
         unlink("img/gallery/" . $image);
     }
     
-    // Hapus data dari database
+
     $stmt = $conn->prepare("DELETE FROM gallery WHERE id = ?");
     $stmt->bind_param("i", $id);
     $stmt->execute();
@@ -34,7 +34,7 @@ if (isset($_GET['delete'])) {
     exit();
 }
 
-// Ambil daftar gambar
+
 $sql = "SELECT * FROM gallery";
 $result = $conn->query($sql);
 ?>

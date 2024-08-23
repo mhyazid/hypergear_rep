@@ -15,7 +15,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $uploadOk = 1;
     $imageFileType = strtolower(pathinfo($target_file, PATHINFO_EXTENSION));
 
-    // Cek jika file adalah gambar
+
     $check = getimagesize($_FILES["image"]["tmp_name"]);
     if ($check !== false) {
         $uploadOk = 1;
@@ -24,13 +24,13 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         $uploadOk = 0;
     }
 
-    // Cek jika file sudah ada
+
     if (file_exists($target_file)) {
         echo "Sorry, file already exists.";
         $uploadOk = 0;
     }
 
-    // Cek jika $uploadOk tidak ada error
+
     if ($uploadOk == 1) {
         if (move_uploaded_file($_FILES["image"]["tmp_name"], $target_file)) {
             $stmt = $conn->prepare("INSERT INTO gallery (image, description) VALUES (?, ?)");

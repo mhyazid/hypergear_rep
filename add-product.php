@@ -1,5 +1,10 @@
 <?php
-include 'db.php'; // Koneksi ke database
+session_start();
+if (!isset($_SESSION['admin_id'])) {
+    header('Location: login.php');
+    exit();
+}
+include 'db.php';
 
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $name = $_POST['name'];
@@ -13,14 +18,12 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         $fileNameCmps = explode(".", $fileName);
         $fileExtension = strtolower(end($fileNameCmps));
         
-        // Tentukan path penyimpanan file
         $uploadDir = 'img/';
         $newFileName = md5(time() . $fileName) . '.' . $fileExtension;
         $uploadFileDir = $uploadDir . $newFileName;
         
-        // Pindahkan file dari tmp ke direktori upload
         if (move_uploaded_file($fileTmpPath, $uploadFileDir)) {
-            // Simpan data ke database
+
             $stmt = $conn->prepare("INSERT INTO products (name, description, price, image) VALUES (?, ?, ?, ?)");
             $stmt->bind_param("ssis", $name, $description, $price, $newFileName);
             $stmt->execute();
